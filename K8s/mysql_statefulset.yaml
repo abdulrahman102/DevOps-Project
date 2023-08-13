@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+ name: mysql-db
+spec:
+ selector:
+   matchLabels:
+     app: mysql-db
+ serviceName: mysql-db
+ replicas: 1
+ template:
+   metadata:
+     labels:
+       app: mysql-db
+   spec:
+     terminationGracePeriodSeconds: 10
+     volumes:
+      - name: sql-at-start
+        configMap:
+          name: db-sql
+     containers:
+     - name: mysql-db
+       image: mysql:latest
+       ports:
+       - containerPort: 3306
+         name: mysql-db
+       env:
+       - name: MYSQL_ROOT_PASSWORD
+         valueFrom:
+           secretKeyRef:
+             name: db-password
+             key: DB-PASSWORD
+       volumeMounts:
+       - mountPath: /docker-entrypoint-initdb.d/
+         name: sql-at-start
+       - mountPath: /var/lib/mysql
+         name: db-backup
+
+ volumeClaimTemplates:
+ - metadata:
+     name: db-backup
+   spec:
+     storageClassName: gp2
+     accessModes: [ "ReadWriteOnce" ]
+     resources:
+       requests:
+         storage: 1Gi
+
+
+---
+ 
+apiVersion: v1
+kind: Service
+metadata:
+ name: mysql-db
+ labels:
+   app: mysql-db
+spec:
+ type: ClusterIP
+ selector:
+   app: mysql-db
+ ports:
+   - port: 3306
+     targetPort: 3306

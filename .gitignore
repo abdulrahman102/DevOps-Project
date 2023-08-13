@@ -1,0 +1,7 @@
+sprint_1.pem
+.terraform
+tessst
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+*.tfvars.*

@@ -1,0 +1,2 @@
+[test]
+54.80.126.251 ansible_user="ubuntu" ansible_ssh_private_key_file="./sprint_1.pem"

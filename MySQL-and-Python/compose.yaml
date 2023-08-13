@@ -1,0 +1,21 @@
+version: '3.1' 
+services:
+  db:
+    build: MySQL_Queries/.
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    restart: always
+  app:
+    build: FlaskApp/.
+    ports:
+      - 5002:5002
+    environment:
+      - MYSQL_DATABASE_USER=root
+      - MYSQL_DATABASE_DB=BucketList
+      - MYSQL_DATABASE_HOST=db
+      - MYSQL_DATABASE_PASSWORD=password
+    restart: always
+    depends_on:
+      - 'db'    

@@ -1,0 +1,255 @@
+---
+- name: Install Jenkins
+  hosts: test
+  become: true  
+  vars_files:
+    - vars.yml
+  tasks:
+  
+    #___________________________ Install Java and Jenkins ___________________________#
+    - name: Add jenkins repo
+      shell: |
+        curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+        echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+    - name: Update apt cache (for Ubuntu)
+      apt:
+        update_cache: yes
+         
+    - name: Install Java
+      apt:
+        name: openjdk-17-jre 
+        state: present
+        
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        state: present
+    - name: Start and enable Jenkins service
+      service:
+        name: jenkins
+        state: started
+        enabled: yes
+
+
+    #___________________________ Install AWS and Kubectl ___________________________#
+    - name: install unzip (for Ubuntu)
+      apt:
+        name: unzip
+        state: present  
+
+    - name: instal aws-cli
+      shell: |
+        curl -f "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
+        unzip -n awscliv2.zip 
+        ./aws/install --update
+
+    - name: install kubectl 
+      shell: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" 
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    
+
+    #___________________________ Install Docker ___________________________#
+    - name: install docker requirements 1
+      apt :
+        name: "{{item}}"
+        state: latest
+      with_items:
+        - ca-certificates
+        - curl
+        - gnupg 
+
+    - name: Check if docker key file exists
+      stat:
+        path: "/etc/apt/keyrings/docker.gpg"
+      register: file_status
+
+    - name: install docker requirements 2
+      shell: |  
+        sudo install -m 0755 -d /etc/apt/keyrings 
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg 
+        sudo chmod a+r /etc/apt/keyrings/docker.gpg
+        echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+      when: not file_status.stat.exists
+
+    - name: Update apt cache (for Ubuntu)
+      apt:
+        update_cache: yes
+         
+    - name: apt install docker
+      apt :
+        name: "{{item}}"
+        state: latest
+      with_items:
+        - docker-ce 
+        - docker-ce-cli 
+        - containerd.io 
+        - docker-buildx-plugin 
+        - docker-compose-plugin
+
+
+    #___________________________ Configure Jenkins User___________________________#
+    - name: "Read a password file content"
+      shell: |
+        cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: password_file_content
+
+    - name: "Print the password file content to a console"
+      debug:
+        msg: "{{ password_file_content.stdout }}"
+
+    - name: JENKINS-CTEDENTIALS | Create CRUMB authentication request
+      uri:
+        url: 'http://{{ groups["test"][0]}}:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+        user: admin
+        password: '{{ password_file_content.stdout }}'
+        force_basic_auth: yes
+        return_content: yes
+      register: crumb
+
+    - name: JENKINS-CTEDENTIALS | Add Jenkins administration account
+      uri:
+        method: POST
+        url: "http://{{ groups['test'][0]}}:8080/securityRealm/createAccountByAdmin"
+        user: admin
+        password: '{{ password_file_content.stdout }}'
+        force_basic_auth: yes
+        follow_redirects: all
+        headers:
+          Jenkins-Crumb: '{{ crumb.content.split(":")[1] }}'
+          Cookie: '{{ crumb.set_cookie }}'
+        body: 'username={{ jenkins_user }}&password1={{ jenkins_password }}&password2={{ jenkins_password }}&fullname={{ jenkins_fullname }}&email={{ jenkins_email }}'
+        
+
+    #___________________________ Install necessary plugins and start jenkins___________________________#
+    - name: Install most used plugins
+      community.general.jenkins_plugin:
+        name: "{{ item }}"
+        url_username: "{{ jenkins_user }}"
+        url_password: "{{ jenkins_password }}"
+        url: http://{{groups['test'][0]}}:8080
+        state: latest
+      with_items:
+        - envinject  
+        - docker
+        - Kubernetes-cli
+        - kuberenetes
+        - folders
+        - aws-cli
+        - ace-editor
+        - antisamy-markup-formatter
+        - bouncycastle-api
+        - branch-api
+        - build-timeout
+        - caffeine-api
+        - checks-api
+        - cloudbees-folder
+        - command-launcher
+        - credentials
+        - credentials-binding
+        - display-url-api
+        - durable-task
+        - echarts-api
+        - email-ext
+        - font-awesome-api
+        - git
+        - git-client
+        - git-server
+        - github
+        - github-api
+        - github-branch-source
+        - gradle
+        - handlebars
+        - jackson2-api
+        - jaxb
+        - jdk-tool
+        - jjwt-api
+        - jquery3-api
+        - jsch
+        - junit
+        - ldap
+        - lockable-resources
+        - mailer
+        - matrix-auth
+        - matrix-project
+        - momentjs
+        - okhttp-api
+        - pam-auth
+        - pipeline-build-step
+        - pipeline-github-lib
+        - pipeline-graph-analysis
+        - pipeline-input-step
+        - pipeline-milestone-step
+        - pipeline-model-api
+        - pipeline-model-definition
+        - pipeline-model-extensions
+        - pipeline-rest-api
+        - pipeline-stage-step
+        - pipeline-stage-tags-metadata
+        - pipeline-stage-view
+        - plain-credentials
+        - plugin-util-api
+        - popper-api
+        - popper2-api
+        - resource-disposer
+        - scm-api
+        - script-security
+        - snakeyaml-api
+        - ssh-credentials
+        - ssh-slaves
+        - sshd
+        - structs
+        - timestamper
+        - token-macro
+        - trilead-api
+        - workflow-aggregator
+        - workflow-api
+        - workflow-basic-steps
+        - workflow-cps
+        - workflow-cps-global-lib
+        - workflow-durable-task-step
+        - workflow-job
+        - workflow-multibranch
+        - workflow-scm-step
+        - workflow-step-api
+        - workflow-support
+        - ws-cleanup
+
+
+    # - name: Check if line exists in the config file
+    #   shell: "sudo grep 'Environment=\"JAVA_ARGS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false\"' /lib/systemd/system/jenkins.service"
+    #   register: line_exists
+    #   changed_when: false
+    #   failed_when: false
+
+    # - name: Check if output is non-empty
+    #   set_fact:
+    #     output_size: "{{ line_exists.stdout | length }}"
+
+    - name: Skip initial setup
+      lineinfile:
+        path: /lib/systemd/system/jenkins.service
+        regexp: '^Environment="JAVA_OPTS=*'
+        line: |
+          Environment="JAVA_OPTS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"
+          Environment="JAVA_ARGS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"
+      
+    - name: DAEMON_Realod
+      systemd:
+        daemon_reload: true
+
+    - name: add jenkins user to docker group
+      shell: |  
+        sudo groupadd docker
+        sudo usermod -aG docker jenkins
+        
+    - name: Restart Jenkins service
+      service:
+        name: jenkins
+        state: restarted
+        enabled: yes
+
+    - name: Display jenkins IP
+      debug:
+        msg: "http://{{groups['test'][0]}}:8080"
