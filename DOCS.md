@@ -2,8 +2,8 @@
 
 
 <div align="center">
-  <a href="https://github.com/abdulrahman102/Complete-DevOps-Project">
-    <img src="https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/abdulrahman102/DevOps-Project">
+    <img src="Screenshots/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h1 align="center">DOCUMENTATION</h1>
@@ -11,13 +11,13 @@
   <p align="center">
     Deployment of FlaskApp into a Kubernetes cluster 
     <br />
-    <a href="https://github.com/abdulrahman102/Complete-DevOps-Project/tree/master/Terraform">Infrastructure files</a>
+    <a href="Terraform/">Infrastructure files</a>
     ·
-    <a href="https://github.com/abdulrahman102/Complete-DevOps-Project/tree/master/Ansible">Configuration files</a>    
+    <a href="Ansible/">Configuration files</a>    
     .
-    <a href="https://github.com/abdulrahman102/Complete-DevOps-Project/tree/master/K8s">Kubernetes files</a>
+    <a href="K8s/">Kubernetes files</a>
     ·
-    <a href="https://github.com/abdulrahman102/Complete-DevOps-Project/tree/master/MySQL-and-Python">App & DOCKER files</a>
+    <a href="MySQL-and-Python/">App & DOCKER files</a>
   </p>
 </div>
 
@@ -117,8 +117,8 @@ the steps are :
 
 > **NOTE**: You should add the url inside the app manually (preferred to be a real domain name) 
 
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/jenkinsurl1.png)
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/jenkinsurl2.png)
+![](Screenshots/jenkinsurl1.png)
+![](Screenshots/jenkinsurl2.png)
 
 **Use the env injection as illustrated in [README.md]().**
 
@@ -175,6 +175,6 @@ The docker files are used to pull the image of python and install the requiremen
 
 ## 6) BASH SCRIPT
 _RUN.sh Script is used to run Terraform and Ansible file automatically and check for errors_
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/scriptbash.png)
+![](Screenshots/scriptbash.png)
 
 
