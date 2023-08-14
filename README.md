@@ -107,7 +107,7 @@ You must put the ssh key inside Ansible directory.
 _ Starting the infrastructutre (Make sure your AWS credentials are in the default path ~/.aws/credentials) _
 
 1. Enter your variables values to a terraform.tfvars file.
-- For more information about the variables, check [variables.tf](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Terraform/variables.tf) file.
+- For more information about the variables, check [variables.tf](Terraform/variables.tf) file.
     ```sh
     ./Terraform/terraform.tfvars
     ```
@@ -117,11 +117,11 @@ _ Starting the infrastructutre (Make sure your AWS credentials are in the defaul
     ./Run.sh
     ```
 3. Get Jenkins Environment Variables.
-   ![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/jenkins1.png)
+   ![](Screenshots/jenkins1.png)
 
 4. Login to Jenkins site.
-   ![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/jenkins2.png)
-   ![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/jenkins3.png)
+   ![](Screenshots/jenkins2.png)
+   ![](Screenshots/jenkins3.png)
 
 5. Start pipeline and inject the environment variable.
    ```
@@ -133,10 +133,10 @@ _ Starting the infrastructutre (Make sure your AWS credentials are in the defaul
    ```
     Instructions can be found in https://medium.com/@developerwakeling/setting-up-github-webhooks-jenkins-and-ngrok-for-local-development-f4b2c1ab5b6
    ```
-   ![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/weebhook1.png)
-   ![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/weebohook2.png)
+   ![](Screenshots/weebhook1.png)
+   ![](Screenshots/weebohook2.png)
 
-7. **(FOR TESTING)** YOU can use docker-compose file in [MySQL-and-Python](https://github.com/abdulrahman102/Complete-DevOps-Project/tree/master/MySQL-and-Python) directory to build a test application on your localhost:5002
+7. **(FOR TESTING)** YOU can use docker-compose file in [MySQL-and-Python](MySQL-and-Python) directory to build a test application on your localhost:5002
   ```
     docker-compose up (To start)
     docker-compose down (To end)
@@ -149,15 +149,15 @@ _ Starting the infrastructutre (Make sure your AWS credentials are in the defaul
 <a name="final"></a>
 
 
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/final1.png)
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/final2.png)
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/final3.png)
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/final4.png)
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/final5.png)
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/final6.png)
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/final7.png)
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/final8.png)
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/build.png)
+![](Screenshots/final1.png)
+![](Screenshots/final2.png)
+![](Screenshots/final3.png)
+![](Screenshots/final4.png)
+![](Screenshots/final5.png)
+![](Screenshots/final6.png)
+![](Screenshots/final7.png)
+![](Screenshots/final8.png)
+![](Screenshots/build.png)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
