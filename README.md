@@ -6,8 +6,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/abdulrahman102/Complete-DevOps-Project">
-    <img src="https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/amazon-eks.svg" alt="Logo" width="80" height="80">
+  <a href="https://github.com/abdulrahman102/DevOps-Project">
+    <img src="Screenshots/amazon-eks.svg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Capstone-project</h3>
@@ -15,13 +15,13 @@
   <p align="center">
     Deployment of FlaskApp into a Kubernetes cluster 
     <br />
-    <a href="https://github.com/abdulrahman102/Complete-DevOps-Project/tree/master/Terraform">Infrastructure files</a>
+    <a href="Terraform/">Infrastructure files</a>
     ·
-    <a href="https://github.com/abdulrahman102/Complete-DevOps-Project/tree/master/Ansible">Configuration files</a>    
+    <a href="Ansible/">Configuration files</a>    
     .
-    <a href="https://github.com/abdulrahman102/Complete-DevOps-Project/tree/master/K8s">Kubernetes files</a>
+    <a href="K8s/">Kubernetes files</a>
     ·
-    <a href="https://github.com/abdulrahman102/Complete-DevOps-Project/tree/master/MySQL-and-Python">App & DOCKER files</a>
+    <a href="MySQL-and-Python/">App & DOCKER files</a>
   </p>
 </div>
 
@@ -46,7 +46,7 @@
 <a name="about"></a>
 
 This repo contains the full files to deploy a Flask/Mysql app to AWS cloud for a DevOps implementation.
-![](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/Screenshots/diagaram.png)
+![](Screenshots/diagaram.png)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -77,7 +77,7 @@ This repo contains the full files to deploy a Flask/Mysql app to AWS cloud for a
 
 This is a guide to run the files with a final product look.
 
-_For more explanation of the code, [Documentation](https://github.com/abdulrahman102/Complete-DevOps-Project/blob/master/DOCS.md)_
+_For more explanation of the code, [Documentation](DOCS.md)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
